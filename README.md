@@ -9,65 +9,109 @@ To implement customer segmentation using K-Means clustering on the Mall Customer
 2. Anaconda – Python 3.7 Installation / Jupyter notebook
 
 ## Algorithm
-1.Dataset Loading – Load the customer dataset using pandas and select features such as Age, Annual Income, and Spending Score.
+1. Load the Data Import the dataset to start the clustering analysis process.
 
-2.Feature Scaling – Standardize the selected features using StandardScaler to bring them to the same scale.
+2.Explore the Data Analyze the dataset to understand distributions, patterns, and key characteristics.
 
-3.K-Means Clustering – Apply the K-Means algorithm with different numbers of clusters to group similar customers.
+3.Select Relevant Features Identify the most informative features to improve clustering accuracy and relevance.
 
-4.Elbow Method Visualization – Plot inertia values for different clusters to determine the optimal number of clusters.
+4.Preprocess the Data Clean and scale the data to prepare it for clustering.
+
+5.Determine Optimal Number of Clusters Use techniques like the elbow method to find the ideal number of clusters.
+
+6.Train the Model with K-Means Clustering Apply the K-Means algorithm to group data points into clusters based
 
 ## Program:
 ```
 /*
 Program to implement customer segmentation using K-Means clustering on the Mall Customers dataset.
-Developed by: SATHISH H
+Developed by: Sathish h
 RegisterNumber: 212225240142
 */
+import os
+os.environ["OMP_NUM_THREADS"] = "1"  # Prevent MKL memory leak warning on Windows
 
-import os 
-os.environ["OMPI NUM_THREADS"] = "1" 
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn. cluster import KMeans
+from sklearn.cluster import KMeans
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import silhouette_score
 import warnings
- 
+
+# Optional: suppress only the specific warning message if you want cleaner output
 warnings.filterwarnings("ignore", message="KMeans is known to have a memory leak on Windows with MKL")
 
+# Step 1: Load the dataset
 data = pd.read_csv('CustomerData.csv')
 
-print(data.head()) 
+# Step 2: Explore the data
+print(data.head())
 print(data.columns)
 
-features = ['Age', 'Annual Income (k$)','Spending Score (1-100)']
-X = data [features]
+# Step 3: Select relevant features
+features = ['Age', 'Annual Income (k$)', 'Spending Score (1-100)']
+X = data[features]
 
+# Step 4: Standardize features
 scaler = StandardScaler()
 X_scaled = scaler.fit_transform(X)
 
-
+# Step 5: Elbow method to find optimal clusters
 inertia_values = []
 for i in range(1, 11):
-    kmeans = KMeans(n_clusters=i, random_state=42, n_init=10) # Explicit n init to suppress warning
+    kmeans = KMeans(n_clusters=i, random_state=42, n_init=10)  # Explicit n_init to suppress warning
     kmeans.fit(X_scaled)
     inertia_values.append(kmeans.inertia_)
-print("Name: Hari Prasath M")
-print("Register No:212225100015")
 
 plt.figure(figsize=(8, 4))
-plt.plot(range(1, 11), inertia_values, marker='o', linestyle='-') 
+plt.plot(range(1, 11), inertia_values, marker='o', linestyle='-')
 plt.xlabel('Number of Clusters')
 plt.ylabel('Inertia')
 plt.title('Elbow Method for Optimal Number of Clusters')
 plt.show()
+
+# Step 6: Train KMeans with chosen clusters
+optimal_clusters = 4
+kmeans = KMeans(n_clusters=optimal_clusters, random_state=42, n_init=10)  # Explicit n_init
+kmeans.fit(X_scaled)
+
+# Step 7: Add cluster labels to data
+data['Cluster'] = kmeans.labels_
+
+# Silhouette score
+sil_score = silhouette_score(X_scaled, kmeans.labels_)
+print(f'Silhouette Score: {sil_score}')
+
+# Step 8: Visualize clusters
+plt.figure(figsize=(10, 6))
+sns.scatterplot(
+    data=data,
+    x='Annual Income (k$)',
+    y='Spending Score (1-100)',
+    hue='Cluster',
+    palette='viridis',
+    s=100,
+    alpha=0.7
+)
+
+# Plot cluster centroids (inverse scale)
+centers = scaler.inverse_transform(kmeans.cluster_centers_)
+plt.scatter(centers[:, 1], centers[:, 2], c='red', s=200, alpha=0.75, marker='X', label='Centroids')
+
+plt.title('Customer Segmentation based on Annual Income and Spending Score')
+plt.xlabel('Annual Income (k$)')
+plt.ylabel('Spending Score (1-100)')
+plt.legend(title='Cluster')
+plt.show()
+
 ```
 
 ## Output:
 
-<Figure size 800x400 with 1 Axes><img width="695" height="391" alt="image" src="https://github.com/user-attachments/assets/1519db0b-d697-4cf1-a458-f8f940272b95" />
+<img width="939" height="759" alt="image" src="https://github.com/user-attachments/assets/35e823bd-3656-4360-8bea-6c636a5ba48e" />
+<img width="939" height="569" alt="image" src="https://github.com/user-attachments/assets/9b3af245-dd37-4dd1-a70d-c9313ae64ff3" />
+
 
 
 ## Result:
