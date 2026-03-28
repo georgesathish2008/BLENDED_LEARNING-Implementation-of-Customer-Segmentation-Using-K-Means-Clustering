@@ -109,10 +109,10 @@ plt.show()
 
 ## Output:
 
-<img width="939" height="759" alt="image" src="https://github.com/user-attachments/assets/35e823bd-3656-4360-8bea-6c636a5ba48e" />
-<img width="939" height="569" alt="image" src="https://github.com/user-attachments/assets/9b3af245-dd37-4dd1-a70d-c9313ae64ff3" />
-
-
+<img width="444" height="128" alt="image" src="https://github.com/user-attachments/assets/1bfb7500-8634-4143-bd64-e421642061c6" />
+<img width="595" height="300" alt="image" src="https://github.com/user-attachments/assets/820db0cc-460e-4430-846b-ad31af915e31" />
+<img width="741" height="409" alt="image" src="https://github.com/user-attachments/assets/0e6fffe7-82aa-40f1-8808-9f39720fcf85" />
+<img width="553" height="346" alt="image" src="https://github.com/user-attachments/assets/e05bb7c7-accb-4ad7-bdfe-cbb3b39934ed" />
 
 ## Result:
 Thus, customer segmentation was successfully implemented using K-Means clustering, grouping customers into distinct segments based on their annual income and spending score. 
